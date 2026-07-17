@@ -1,0 +1,32 @@
+.botones-modal,
+.titulos-modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-modal-aceptar {
+  width: 20%;
+  height: 50px;
+  background-color: #0076c4;
+  color: #ffffff;
+  margin-top: 20px;
+}
+
+.btn-modal-cancelar {
+  width: 20%;
+  height: 50px;
+  background-color: #ee161f;
+  color: #ffffff;
+  margin-top: 20px;
+  margin-left: 20px;
+}
+
+.btn-modal-editar {
+  background-color: #ee161f;
+  color: #ffffff;
+}
+
+.lista-direcciones {
+  list-style: none;
+}

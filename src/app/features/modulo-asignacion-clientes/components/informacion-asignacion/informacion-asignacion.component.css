@@ -1,0 +1,25 @@
+.container,
+.asignacion-manual,
+.archivo-descargable {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.centrar-texto {
+  text-align: center;
+}
+
+.btn-volver {
+  background-color: #ee161f;
+  color: #ffffff;
+  height: 40px;
+  margin-top: 10px;
+}
+
+.btn-archivo{
+  background-color: #00a7de;
+  color: #ffffff;
+  height: 40px;
+  margin-bottom: 10px;
+}

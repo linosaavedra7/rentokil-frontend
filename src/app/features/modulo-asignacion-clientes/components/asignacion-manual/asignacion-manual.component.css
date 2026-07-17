@@ -1,0 +1,354 @@
+.right-container {
+  height: 500px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+app-spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(255, 255, 255, 0.7);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.confirmacion-resultado {
+  margin-top: 10em;
+  width: 80%;
+}
+.informacion-propuesta {
+  width: 90%;
+}
+#mapa {
+  visibility: hidden;
+  margin: 20px 0;
+  width: 90%;
+  height: 350px;
+  border-radius: 5%;
+}
+.tabla-container {
+  display: flex;
+  justify-content: center;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-bottom: 20px;
+}
+
+@media only screen and (max-width: 900px) {
+  .cliente {
+    width: 100%;
+  }
+  .cliente h2 {
+    margin: 0;
+    text-align: center;
+  }
+  .container {
+    display: flex;
+    flex-direction: column;
+  }
+  .left-container,
+  .right-container {
+    width: 90%;
+    margin: auto;
+  }
+  .linea-separadora {
+    border: 1px solid #cccccc;
+    height: 100%;
+  }
+  .clientes-container hr,
+  .formulario-container hr {
+    width: 95%;
+  }
+  .formulario-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+  .clientes-container,
+  .servicios-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 20px;
+  }
+  /*
+  .clientes-container hr,
+  .servicios-container hr {
+    width: 95%;
+  }*/
+  .tabla-clientes {
+    width: 90%;
+  }
+  .tabla-servicios {
+    width: 90%;
+  }
+  .tabla-servicios td {
+    padding-left: 10px;
+  }
+  .formulario-asignacion-manual {
+    padding-top: 10px;
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+  }
+  .centrar-texto {
+    text-align: center;
+  }
+  /*
+  mat-form-field {
+    width: 90%;
+  }*/
+  .btn-generar,
+  .btn-guardar,
+  .btn-aceptar {
+    background-color: green;
+    color: #ffffff;
+  }
+  .resultado-propuesta {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .btn-diaLog {
+    width: 15%;
+    height: 30%;
+    background-color: #0076c4;
+    color: #ffffff;
+  }
+  .botones-formulario {
+    display: flex;
+    justify-content: space-around;
+    padding-bottom: 20px;
+    width: 90%;
+  }
+  .botones-confirmacion {
+    display: flex;
+    justify-content: space-evenly;
+  }
+  .btn-cancelar,
+  .btn-cerrar {
+    background-color: red;
+    color: white;
+    height: 40px;
+  }
+  .btn-saturaciones {
+    background-color: #00a7de;
+    color: #ffffff;
+  }
+  .seccion-saturaciones {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .tabla-saturaciones {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #fefefe;
+    border: 1px solid #888888;
+    width: 90%;
+    padding-bottom: 20px;
+  }
+  app-tabla-saturaciones {
+    width: 100%;
+  }
+  .confirmacion-resultado {
+    margin-top: 0;
+    width: inherit;
+    margin-bottom: 20px;
+  }
+  #mapa {
+    width: 100%;
+  }
+}
+
+@media only screen and (min-width: 901px) {
+  .cliente {
+    width: 100%;
+  }
+
+  .cliente h2 {
+    margin: 0;
+    text-align: center;
+  }
+
+  .container {
+    display: flex;
+    height: 85vh;
+  }
+
+  .left-container {
+    /*width: 50%;*/
+
+    display: flex;
+    flex-direction: column;
+    justify-content: normal;
+    align-items: center;
+    width: 50%;
+    height: 100%;
+  }
+
+  .right-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 50%;
+    height: 475px;
+  }
+
+  .linea-separadora {
+    border: 1px solid #cccccc;
+    height: 100%;
+  }
+
+  .formulario-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+
+  .clientes-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+
+  .servicios-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .tabla-clientes {
+    width: 90%;
+  }
+
+  .tabla-servicios {
+    width: 90%;
+  }
+
+  .tabla-clientes th,
+  .tabla-servicios th {
+    padding-right: 10px;
+  }
+
+  .tabla-clientes td,
+  .tabla-servicios td {
+    padding-left: 10px;
+  }
+
+  .formulario-asignacion-manual {
+    padding-top: 10px;
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+  }
+
+  .centrar-texto {
+    text-align: center;
+  }
+  /*
+  mat-form-field {
+    width: 90%;
+  }*/
+
+  .btn-generar,
+  .btn-guardar {
+    background-color: green;
+    color: #ffffff;
+    height: 40px;
+  }
+
+  .resultado-propuesta {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .resultado-optimizacion {
+    width: 90%;
+  }
+
+  .btn-diaLog {
+    width: 15%;
+    height: 30%;
+    background-color: #0076c4;
+    color: #ffffff;
+  }
+
+  .botones-formulario {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+  }
+
+  .botones-confirmacion {
+    display: flex;
+    justify-content: space-around;
+    width: 70%;
+    margin: auto;
+  }
+
+  .btn-aceptar {
+    background-color: green;
+    color: #ffffff;
+  }
+
+  .btn-cancelar,
+  .btn-cerrar {
+    background-color: red;
+    color: #ffffff;
+    height: 40px;
+  }
+
+  .btn-saturaciones {
+    background-color: #00a7de;
+    color: #ffffff;
+  }
+
+  .seccion-saturaciones {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(255, 255, 255, 0.7);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .tabla-saturaciones {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #fefefe;
+    border: 1px solid #888888;
+    width: 90%;
+    padding-bottom: 20px;
+  }
+  .no-hay-clientes {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+  }
+
+  .pointer-event {
+    pointer-events: none;
+  }
+}

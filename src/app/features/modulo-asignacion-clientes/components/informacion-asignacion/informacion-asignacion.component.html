@@ -1,0 +1,58 @@
+<div class="container" *ngIf="!esAsignacionManual">
+  <div class="informacion-ruta">
+    <h2 class="centrar-texto">Ruta:</h2>
+    <ul>
+      <li *ngFor="let ruta of rutaFinal">{{ ruta }}</li>
+    </ul>
+  </div>
+  <hr width="100%" />
+  <div class="link-ruta" style="word-break: break-word">
+    <h2 class="centrar-texto">Link ruta:</h2>
+    <a [href]="informacionAsignacion[0].link_mapa" target="_blank">{{
+      informacionAsignacion[0].link_mapa
+    }}</a>
+  </div>
+  <hr width="100%" />
+  <div class="archivo-descargable">
+    <h2 class="centrar-texto">Excel ruta:</h2>
+    <button
+        mat-raised-button
+        class="btn-archivo"
+       (click) = "descargar_archivo_asignacion()"
+      >
+        Archivo
+      </button>
+  </div>
+  <hr width="100%" />
+  <button mat-raised-button class="btn-volver" (click)="refrescarPagina()">
+    Cerrar
+  </button>
+</div>
+<div class="asignacion-manual" *ngIf="esAsignacionManual">
+  <div class="informacion-ruta">
+    <h2 class="centrar-texto">Ruta:</h2>
+    <ul>
+      <li *ngFor="let ruta of rutas">{{ ruta }}</li>
+    </ul>
+  </div>
+  <hr width="100%" />
+  <div class="link-ruta" style="word-break: break-word">
+    <h2 class="centrar-texto">Link ruta:</h2>
+    <a [href]="linkMapa" target="_blank">{{ linkMapa }}</a>
+  </div>
+  <hr width="100%" />
+  <div class="archivo-descargable">
+    <h2 class="centrar-texto">Excel ruta:</h2>
+    <button
+        mat-raised-button
+        class="btn-archivo"
+       (click) = "descargar_archivo_asignacion()"
+      >
+        Archivo
+      </button>
+  </div>
+  <hr width="100%" />
+  <button mat-raised-button class="btn-volver" (click)="refrescarPagina()">
+    Cerrar
+  </button>
+</div>

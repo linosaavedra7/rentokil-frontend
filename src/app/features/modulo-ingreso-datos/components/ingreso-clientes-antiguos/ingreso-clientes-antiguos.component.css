@@ -1,0 +1,125 @@
+@media only screen and (min-width: 901px) {
+  span {
+    padding-left: 10px;
+    width: 0%;
+  }
+  .form-control {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+@media only screen and (max-width: 900px) {
+  .nombre-archivo {
+    width: auto;
+    padding: 10px 0 0 0;
+  }
+  .form-control {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+h1 {
+  margin: 0;
+}
+.formulario-masivo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+label {
+  padding-bottom: 10px;
+}
+mat-accordion {
+  width: auto;
+}
+mat-expansion-panel {
+  background: #009bd7;
+}
+mat-panel-title {
+  color: #ffffff;
+}
+::ng-deep .mat-expansion-indicator::after {
+  color: #ffffff;
+}
+img {
+  padding: 20px;
+}
+.input-personalizado {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+.cargar-archivo {
+  border: 1px solid #ffffff;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  display: inline-block;
+  padding: 6px 12px;
+  cursor: pointer;
+  color: #ffffff;
+}
+.ingreso-masivo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.centrar-texto {
+  text-align: center;
+}
+.form-control {
+  padding: 10px 0;
+  width: 50%;
+}
+.btn {
+  width: 150px;
+  height: 50px;
+  background-color: green;
+  color: #ffffff;
+  margin-top: 10px;
+}
+.spinner {
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.spinner-info {
+  width: fit-content;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.formato-tabla {
+  width: 80%;
+}
+.clientes-antiguos {
+  height: 85vh;
+  overflow-y: auto;
+}
+app-spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(255, 255, 255, 0.7);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

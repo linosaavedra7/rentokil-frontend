@@ -1,0 +1,146 @@
+.pointer-event {
+  pointer-events: none;
+}
+mat-expansion-panel {
+  background-color: #009bd7;
+}
+mat-panel-title {
+  color: #ffffff;
+}
+::ng-deep .mat-expansion-indicator::after {
+  color: #ffffff;
+}
+.cargar-archivo {
+  border: 1px solid #ffffff;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  display: inline-block;
+  padding: 6px 12px;
+  cursor: pointer;
+  color: #ffffff;
+}
+.input-personalizado {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+.centrar-texto {
+  text-align: center;
+}
+.btn-eliminar {
+  background-color: #ee161f;
+  color: #ffffff;
+}
+.spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.7);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.btn-obtener {
+  background-color: #009bd7;
+  color: #ffffff;
+}
+.servicios-container,
+.visitas-container {
+  display: flex;
+  flex-direction: column;
+  width: 95%;
+}
+.eliminar-servicio,
+.eliminar-visita,
+.eliminar-masivo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-top: 20px;
+}
+
+@media only screen and (max-width: 900px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    height: 80vh;
+  }
+  .form-control {
+    margin: 10px 0;
+  }
+  .centrar-texto {
+    margin-bottom: 0;
+  }
+  table {
+    margin-top: 20px;
+    border: 1px solid #cccccc;
+    overflow-x: auto;
+    display: block;
+  }
+  table th,
+  table td {
+    padding: 10px 20px;
+  }
+  .btn-eliminar {
+    margin: 20px auto;
+  }
+  .spinner {
+    height: 100%;
+  }
+  .input-archivo {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .nombre-archivo {
+    margin: 10px;
+  }
+}
+
+@media only screen and (min-width: 901px) {
+  .container {
+    display: flex;
+    justify-content: center;
+    height: 85vh;
+    width: 100%;
+  }
+  .tabs-container {
+    width: 100%;
+  }
+  .form-control {
+    margin: 10px 0;
+  }
+  .btn-eliminar {
+    margin: 20px auto;
+  }
+  table {
+    margin-top: 20px;
+    border: 1px solid #cccccc;
+  }
+  .spinner {
+    height: 100vh;
+  }
+  mat-accordion {
+    margin-top: 10px;
+  }
+  .nombre-archivo {
+    margin: 10px 0 0 10px;
+    width: 0%;
+  }
+  .input-archivo {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

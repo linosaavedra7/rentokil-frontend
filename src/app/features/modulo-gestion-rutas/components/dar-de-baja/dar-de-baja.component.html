@@ -1,0 +1,269 @@
+<app-navegacion [listaNavegacion]="listaNavegacion"></app-navegacion>
+<div class="container" [ngClass]="{ 'pointer-event': loading === true }">
+  <mat-tab-group
+    mat-stretch-tabs
+    class="tabs-container"
+    (selectedTabChange)="limpiarDatos()"
+  >
+    <mat-tab label="Servicio">
+      <div class="eliminar-servicio">
+        <div class="form-control">
+          <label for="nota-venta">Ingrese nota de venta: </label>
+          <input
+            type="number"
+            name="nota-venta"
+            id="nota-venta"
+            style="height: 20px"
+            [(ngModel)]="notaVenta"
+          />
+        </div>
+        <button
+          mat-raised-button
+          type="button"
+          class="btn-obtener"
+          style="margin: 10px 0"
+          (click)="obtenerServiciosNotaVenta()"
+          [disabled]="notaVenta == undefined"
+        >
+          Obtener servicios
+        </button>
+        <div
+          class="servicios-container"
+          *ngIf="
+            mostrarTablaServicios &&
+            notaVenta == notaVentaIngresada &&
+            listaServicios.length !== 0
+          "
+        >
+          <table mat-table [dataSource]="listaServicios">
+            <ng-container matColumnDef="select">
+              <th mat-header-cell *matHeaderCellDef></th>
+              <td
+                class="centrar-texto"
+                mat-cell
+                *matCellDef="let row"
+                style="padding-right: 10px"
+              >
+                <mat-checkbox
+                  (click)="$event.stopPropagation()"
+                  (change)="
+                    $event ? seleccionServicio.toggle(row) : null;
+                    obtenerServicioSeleccionado()
+                  "
+                  [checked]="seleccionServicio.isSelected(row)"
+                >
+                </mat-checkbox>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="id">
+              <th class="centrar-texto" mat-header-cell *matHeaderCellDef>
+                ID
+              </th>
+              <td class="centrar-texto" mat-cell *matCellDef="let dato">
+                {{ dato.id }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="nombre">
+              <th class="centrar-texto" mat-header-cell *matHeaderCellDef>
+                Nombre
+              </th>
+              <td class="centrar-texto" mat-cell *matCellDef="let dato">
+                {{ dato.nombre }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="cantidad">
+              <th class="centrar-texto" mat-header-cell *matHeaderCellDef>
+                Cantidad
+              </th>
+              <td class="centrar-texto" mat-cell *matCellDef="let dato">
+                {{ dato.cantidad }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="dia_log">
+              <th class="centrar-texto" mat-header-cell *matHeaderCellDef>
+                Día logístico
+              </th>
+              <td class="centrar-texto" mat-cell *matCellDef="let dato">
+                {{ dato.dia_log }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="grupo_log">
+              <th class="centrar-texto" mat-header-cell *matHeaderCellDef>
+                Grupo logístico
+              </th>
+              <td class="centrar-texto" mat-cell *matCellDef="let dato">
+                {{ dato.grupo_log }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="rut_cliente">
+              <th class="centrar-texto" mat-header-cell *matHeaderCellDef>
+                Rut cliente
+              </th>
+              <td class="centrar-texto" mat-cell *matCellDef="let dato">
+                {{ dato.rut_cliente }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="nom_cliente">
+              <th class="centrar-texto" mat-header-cell *matHeaderCellDef>
+                Nombre cliente
+              </th>
+              <td class="centrar-texto" mat-cell *matCellDef="let dato">
+                {{ dato.nom_cliente }}
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="columnasTablaServicios"></tr>
+            <tr
+              mat-row
+              *matRowDef="let row; columns: columnasTablaServicios"
+              (click)="
+                seleccionServicio.toggle(row); obtenerServicioSeleccionado()
+              "
+            ></tr>
+          </table>
+          <button
+            mat-raised-button
+            class="btn-eliminar"
+            type="button"
+            (click)="notificacionConfirmacion('servicio')"
+            [disabled]="seleccionServicio.selected.length == 0"
+          >
+            Eliminar servicio
+          </button>
+        </div>
+      </div>
+    </mat-tab>
+    <mat-tab label="Nota de venta">
+      <div class="eliminar-visita">
+        <div class="form-control">
+          <label for="nota-venta">Ingrese nota de venta: </label>
+          <input
+            type="number"
+            name="nota-venta"
+            id="nota-venta"
+            style="height: 20px"
+            [(ngModel)]="notaVenta"
+          />
+        </div>
+        <button
+          mat-raised-button
+          type="button"
+          class="btn-obtener"
+          style="margin: 10px 0"
+          (click)="obtenerVisitasNotaVenta()"
+          [disabled]="notaVenta == undefined"
+        >
+          Obtener información
+        </button>
+        <div
+          class="visitas-container"
+          *ngIf="mostrarTablaVisitas && notaVenta == notaVentaIngresada"
+        >
+          <table mat-table [dataSource]="listaVisitas">
+            <ng-container matColumnDef="rut_cliente">
+              <th class="centrar-texto" mat-header-cell *matHeaderCellDef>
+                Rut cliente
+              </th>
+              <td class="centrar-texto" mat-cell *matCellDef="let dato">
+                {{ dato.rut_clie }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="nom_cliente">
+              <th class="centrar-texto" mat-header-cell *matHeaderCellDef>
+                Nombre cliente
+              </th>
+              <td class="centrar-texto" mat-cell *matCellDef="let dato">
+                {{ dato.nombre_clie }}
+              </td>
+              <ng-container matColumnDef="direccion">
+                <th class="centrar-texto" mat-header-cell *matHeaderCellDef>
+                  Dirección
+                </th>
+                <td class="centrar-texto" mat-cell *matCellDef="let dato">
+                  {{ dato.direccion_log }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="grupo_log">
+                <th class="centrar-texto" mat-header-cell *matHeaderCellDef>
+                  Grupo logístico
+                </th>
+                <td class="centrar-texto" mat-cell *matCellDef="let dato">
+                  {{ dato.grupo_log }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="dia_log">
+                <th class="centrar-texto" mat-header-cell *matHeaderCellDef>
+                  Días logísticos
+                </th>
+                <td class="centrar-texto" mat-cell *matCellDef="let dato">
+                  {{ dato.dias_visita.toString() }}
+                </td>
+              </ng-container>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="columnasTablaVisitas"></tr>
+            <tr
+              mat-row
+              *matRowDef="let row; columns: columnasTablaVisitas"
+            ></tr>
+          </table>
+          <button
+            mat-raised-button
+            class="btn-eliminar"
+            type="button"
+            (click)="notificacionConfirmacion('visita')"
+            [disabled]="notaVenta !== notaVentaIngresada"
+          >
+            Eliminar nota de venta
+          </button>
+        </div>
+      </div>
+    </mat-tab>
+    <mat-tab label="Dar de baja masivo">
+      <div class="eliminar-masivo">
+        <img src="./assets/img/file.png" alt="icono archivo" width="100px" />
+        <p style="margin-top: 20px">Formato archivo</p>
+        <app-formato-archivo
+          [columnasArchivo]="columnasArchivoDarDeBajaMasivo"
+        ></app-formato-archivo>
+        <div class="input-archivo">
+          <mat-accordion>
+            <mat-expansion-panel [(expanded)]="estadoPanelEliminacionMasiva">
+              <mat-expansion-panel-header>
+                <mat-panel-title>Eliminación masiva</mat-panel-title>
+              </mat-expansion-panel-header>
+              <label class="cargar-archivo" for="eliminacion-masiva"
+                >Cargar archivo</label
+              >
+              <input
+                class="input-personalizado"
+                type="file"
+                (change)="
+                  obtenerNombreArchivoEliminacionMasiva($event);
+                  estadoPanelEliminacionMasiva = false;
+                  onFileChange($event)
+                "
+                id="eliminacion-masiva"
+                name="eliminacion-masiva"
+                accept=".csv, .xlsx"
+              />
+            </mat-expansion-panel>
+          </mat-accordion>
+          <span class="nombre-archivo">{{ nombreArchivo }}</span>
+        </div>
+        <button
+          mat-raised-button
+          class="btn-eliminar"
+          type="button"
+          [disabled]="nombreArchivo == ''"
+          (click)="enviar_archivos_eliminar()"
+        >
+          Eliminar
+        </button>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+  <app-spinner
+    class="spinner"
+    [mensaje]="mensajeSpinner"
+    *ngIf="loading"
+  ></app-spinner>
+</div>

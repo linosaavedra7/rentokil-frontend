@@ -1,0 +1,189 @@
+<app-navegacion [listaNavegacion]="listaNavegacion"></app-navegacion>
+<div class="container">
+  <mat-tab-group
+    mat-stretch-tabs
+    class="tabs-container"
+    (selectedTabChange)="limpiarFormularios()"
+  >
+    <mat-tab label="Agregar grupo logístico">
+      <div class="formulario-container" *ngIf="mostrarFormulario">
+        <p class="centrar">Ingrese los datos del nuevo grupo logístico</p>
+        <form
+          class="formulario-grupo-logistico"
+          [formGroup]="formularioGrupoLogistico"
+          (ngSubmit)="guardarGrupoLogistico()"
+        >
+          <mat-form-field appearance="fill">
+            <mat-label for="nombre">Nombre</mat-label>
+            <input
+              matInput
+              type="text"
+              name="nombre"
+              id="nombre"
+              formControlName="nombre"
+            />
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label for="ejecutivo">Ejecutivo</mat-label>
+            <input
+              matInput
+              type="text"
+              name="ejecutivo"
+              id="ejecutivo"
+              formControlName="ejecutivo"
+            />
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label for="zona">Zona</mat-label>
+            <mat-select formControlName="zona">
+              <mat-option
+                *ngFor="
+                  let macrozona of listaMacrozonas | keyvalue : retornarCero
+                "
+                [value]="macrozona.key"
+                >{{ macrozona.value }}</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label for="dupla">Dupla</mat-label>
+            <mat-select formControlName="dupla">
+              <mat-option value="SI">SI</mat-option>
+              <mat-option value="NO">NO</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label for="dias">Días disponible</mat-label>
+            <mat-select formControlName="dias" multiple>
+              <mat-option
+                *ngFor="
+                  let dia of listaDiasLogisticos | keyvalue : retornarCero
+                "
+                [value]="dia.key"
+                >{{ dia.value }}</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label for="linea">Línea</mat-label>
+            <mat-select formControlName="linea">
+              <mat-option *ngFor="let linea of lineas" [value]="linea">{{
+                linea
+              }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label for="sucursal">Sucursal</mat-label>
+            <mat-select formControlName="sucursal">
+              <mat-option
+                *ngFor="let sucursal of sucursales"
+                [value]="sucursal"
+                >{{ sucursal }}</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+          <button
+            mat-raised-button
+            class="btn-agregar"
+            type="submit"
+            [disabled]="formularioGrupoLogistico.invalid"
+          >
+            Agregar
+          </button>
+        </form>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="Agregar días de operación">
+      <form
+        class="formulario-dias-operacion"
+        [formGroup]="formularioDiasOperacion"
+        (ngSubmit)="guardarNuevosDiasOperacion()"
+      >
+        <p class="centrar">Seleccione un grupo logístico</p>
+        <mat-form-field appearance="fill">
+          <mat-label>Grupo logístico</mat-label>
+          <mat-select
+            formControlName="grupoLogistico"
+            (selectionChange)="obtenerDiasOperacion($event)"
+          >
+            <mat-option
+              *ngFor="let grupo of gruposLogisticos"
+              [value]="grupo"
+              >{{ grupo }}</mat-option
+            >
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="fill" *ngIf="diasOperacion.length !== 0">
+          <mat-label>Días disponible</mat-label>
+          <mat-select formControlName="diasLogisticos" multiple>
+            <mat-option *ngFor="let dia of diasOperacion" [value]="dia">{{
+              dia
+            }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <button
+          *ngIf="diasOperacion.length !== 0"
+          mat-raised-button
+          class="btn-agregar"
+          type="submit"
+          [disabled]="formularioDiasOperacion.invalid"
+        >
+          Agregar
+        </button>
+      </form>
+    </mat-tab>
+
+    <mat-tab label="Editar ejecutivo">
+      <form
+        class="formulario-editar-ejecutivo"
+        [formGroup]="formularioEditarEjecutivo"
+        (ngSubmit)="guardarNuevoEjecutivo()"
+      >
+        <p class="centrar">Seleccione un grupo logístico</p>
+        <mat-form-field appearance="fill">
+          <mat-label>Grupo logístico</mat-label>
+          <mat-select
+            formControlName="grupoLogistico"
+            (selectionChange)="obtenerInformacionGrupoLogistico($event)"
+          >
+            <mat-option
+              *ngFor="let grupo of gruposLogisticos"
+              [value]="grupo"
+              >{{ grupo }}</mat-option
+            >
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="fill" *ngIf="existeGrupo">
+          <mat-label>Ejecutivo</mat-label>
+          <input matInput type="text" formControlName="ejecutivo" />
+        </mat-form-field>
+        <mat-form-field appearance="fill" *ngIf="existeGrupo">
+          <mat-label>Zona</mat-label>
+          <input matInput type="text" formControlName="zona" />
+        </mat-form-field>
+        <mat-form-field appearance="fill" *ngIf="existeGrupo">
+          <mat-label>Línea</mat-label>
+          <input matInput type="text" formControlName="linea" />
+        </mat-form-field>
+        <mat-form-field appearance="fill" *ngIf="existeGrupo">
+          <mat-label>Sucursal</mat-label>
+          <input matInput type="text" formControlName="sucursal" />
+        </mat-form-field>
+        <button
+          mat-raised-button
+          *ngIf="existeGrupo"
+          class="btn-agregar"
+          type="submit"
+          [disabled]="
+            formularioEditarEjecutivo.invalid ||
+            nombreEjecutivo == formularioEditarEjecutivo.get('ejecutivo')?.value
+          "
+        >
+          Guardar
+        </button>
+      </form>
+    </mat-tab>
+  </mat-tab-group>
+</div>
+<app-spinner *ngIf="loading" [mensaje]="mensajeSpinner"></app-spinner>

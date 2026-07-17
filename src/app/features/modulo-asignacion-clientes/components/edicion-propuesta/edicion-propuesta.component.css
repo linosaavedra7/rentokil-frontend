@@ -1,0 +1,162 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.ediciones-container {
+  padding-bottom: 20px;
+}
+.formulario-edicion {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 20px;
+}
+.formulario-edicion-manual {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.btn-guardar,
+.btn-generar {
+  background-color: green;
+  color: #ffffff;
+}
+.btn-cancelar,
+.btn-volver,
+.btn-cerrar {
+  background-color: #ee161f;
+  color: #ffffff;
+}
+.titulo {
+  text-align: center;
+  padding-top: 20px;
+}
+.volver {
+  display: flex;
+  padding-top: 20px;
+  justify-content: space-around;
+  height: 40px;
+}
+.resultado-optimizacion {
+  width: 100%;
+}
+.btn-saturaciones {
+  background-color: #00a7de;
+  color: #ffffff;
+}
+.tabla-saturaciones {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #fefefe;
+  border: 1px solid #888888;
+  width: 90%;
+}
+.pointer-event {
+  pointer-events: none;
+}
+.datos-faltantes {
+  width: 100%;
+  overflow-y: auto;
+  height: 470px;
+  padding: 0 25px;
+}
+.seccion-info-propuesta {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.propuesta-aceptada {
+  flex-direction: row;
+}
+.w-50 {
+  width: 50%;
+}
+@media only screen and (max-width: 900px) {
+  .btn-guardar {
+    margin: 10px 0;
+  }
+  .btn-cancelar {
+    display: block;
+    margin: 10px 0;
+  }
+  .btn-volver {
+    display: block;
+    margin: auto;
+    height: 40px;
+  }
+  .btn-generar {
+    margin: auto;
+    height: 40px;
+  }
+  .botones {
+    display: flex;
+    flex-direction: column;
+  }
+  .resultado-optimizacion {
+    flex-direction: column;
+  }
+  .seccion-saturaciones {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+@media only screen and (min-width: 901px) {
+  .ediciones-container {
+    width: 90%;
+  }
+  .btn-guardar {
+    white-space: pre-line;
+    margin-right: 5px;
+    line-height: normal;
+  }
+  .btn-cancelar {
+    white-space: pre-line;
+    margin-right: 5px;
+    line-height: normal;
+  }
+  .btn-volver {
+    display: block;
+    margin: auto;
+    height: 40px;
+  }
+  .btn-cerrar {
+    margin-bottom: 20px;
+  }
+  .btn-generar {
+    height: 40px;
+  }
+  .botones {
+    display: flex;
+    justify-content: space-around;
+    height: 40px;
+  }
+  .botones-acciones {
+    display: flex;
+    justify-content: space-around;
+    height: 50px;
+  }
+  .resultado-optimizacion {
+    display: flex;
+    flex-direction: column;
+  }
+  .seccion-saturaciones {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 93vh;
+    background-color: rgba(255, 255, 255, 0.7);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .mapa {
+    width: 100%;
+  }
+}

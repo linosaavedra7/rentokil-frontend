@@ -1,0 +1,60 @@
+<div class="container">
+  <section class="seccion-general">
+    <div class="informacion-general">
+      <h1>Información general del sistema web</h1>
+      <hr />
+    </div>
+  </section>
+  <section class="seccion-info-modulos">
+    <div class="modulo-ingreso-datos">
+      <h2>Módulo Ingreso de datos</h2>
+      <p class="info-modulo">
+        En el módulo de ingreso de datos podrá ingresar clientes nuevos y
+        antiguos, tanto de forma manual como masiva.
+      </p>
+      <img
+        src="/assets/img/ingreso-datos.gif"
+        alt="Pasos ejecución módulo ingreso de datos"
+      />
+    </div>
+    <div class="modulo-asignacion-clientes">
+      <h2>Módulo Asignación de clientes</h2>
+      <p class="info-modulo">
+        En el módulo de asignación de clientes podrá optimizar rutas para las
+        visitas de aquellos clientes nuevos en el sistema. También podrá editar
+        las optimizaciones en caso de ser disatisfactorias.
+      </p>
+      <img
+        src="/assets/img/asignacion-clientes.gif"
+        alt="Pasos ejecución módulo asignación de clientes"
+      />
+    </div>
+    <div class="modulo-gestion-rutas">
+      <h2>Módulo Gestión de rutas</h2>
+      <p class="info-modulo">
+        En el módulo de gestión de rutas podrá ver y editar las asignaciones
+        realizadas en el módulo de asignación de clientes. También podrá agregar
+        y editar grupos logísticos y dar de baja a notas de venta o a los
+        servicios de aquellas notas de venta.
+      </p>
+      <img
+        src="/assets/img/gestion-rutas.gif"
+        alt="Pasos ejecución módulo gestión de rutas"
+      />
+    </div>
+  </section>
+  <hr width="99%" />
+  <section class="manual-usuario">
+    <h2>Manual de usuario</h2>
+    <div class = "boton-manual">
+      <button
+        mat-raised-button
+        type="button"
+        class="btn-manual"
+        (click) = "descargar_archivo_manual()"
+        >
+        Descargar
+      </button>
+    </div>
+  </section>
+</div>

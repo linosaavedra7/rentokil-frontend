@@ -1,0 +1,104 @@
+<div class="container" *ngIf="mostrarDatosFaltantes">
+  <h2 class="titulo">Datos faltantes</h2>
+  <hr width="100%" />
+  <button
+    mat-raised-button
+    class="btn-predeterminado"
+    type="button"
+    (click)="rellenarDatos()"
+  >
+    No aplica restricciones
+  </button>
+  <mat-card *ngIf="tiemposFaltantes.length !== 0">
+    <div class="tiempos-container">
+      <h2>Tiempos faltantes</h2>
+      <div class="tiempos" *ngFor="let tiempo of tiemposFaltantes">
+        <mat-label>{{ tiempo }}</mat-label>
+        <mat-form-field appearance="outline">
+          <mat-label>Tiempo de servicio</mat-label>
+          <input
+            matInput
+            type="number"
+            id="{{ tiempo }}"
+            placeholder="Ej: 40"
+            min="1"
+            step="1"
+            (keydown)="evitarDecimales($event)"
+            (blur)="guardarTiempo($event)"
+          />
+          <mat-hint style="font-size: 14px"
+            >Formato: tiempo en minutos</mat-hint
+          >
+        </mat-form-field>
+      </div>
+    </div>
+  </mat-card>
+
+  <mat-card *ngIf="horariosFaltantes.length !== 0">
+    <div class="horarios-container">
+      <h1>Horarios faltantes</h1>
+      <div class="horarios" *ngFor="let horario of horariosFaltantes">
+        <mat-label>{{ horario }}</mat-label>
+        <mat-form-field appearance="outline">
+          <mat-label for="horario-inicio">Horario disponible</mat-label>
+          <input
+            matInput
+            id="{{ horariosFaltantes.indexOf(horario) }}"
+            type="text"
+            placeholder="Ej: 08:00;19:00 ó 08:00;12:00,15:00;19:00"
+            (change)="chequearFormatoHorario($event)"
+            (blur)="guardarHorario($event)"
+          />
+          <mat-hint style="font-size: 14px">Formato: hh:mm;hh:mm</mat-hint>
+        </mat-form-field>
+      </div>
+    </div>
+  </mat-card>
+
+  <mat-card *ngIf="diasFaltantes.length !== 0">
+    <div class="dias-container">
+      <h1>Días faltantes</h1>
+      <div class="dias" *ngFor="let dia of diasFaltantes">
+        <mat-label>{{ dia }}</mat-label>
+        <mat-form-field appearance="outline">
+          <mat-label>Días disponibles</mat-label>
+          <mat-select
+            id="{{ diasFaltantes.indexOf(dia) }}"
+            multiple
+            (selectionChange)="guardarDias($event)"
+          >
+            <mat-option
+              *ngFor="let dia of listaDias | keyvalue : retornarCero"
+              [value]="dia.key"
+              >{{ dia.value }}</mat-option
+            >
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </mat-card>
+
+  <div class="btn">
+    <button
+      mat-raised-button
+      class="btn-generar"
+      type="button"
+      (click)="generarPropuesta()"
+    >
+      Generar propuesta
+    </button>
+  </div>
+</div>
+<div class="no-data-container" *ngIf="noHayDatosFaltantes()">
+  <h2 style="text-align: center">No hay datos faltantes</h2>
+  <div class="btn">
+    <button
+      mat-raised-button
+      class="btn-generar"
+      type="button"
+      (click)="generarPropuestaSinDatosFaltantes()"
+    >
+      Generar propuesta
+    </button>
+  </div>
+</div>

@@ -1,0 +1,228 @@
+mat-form-field {
+  padding-bottom: 10px;
+}
+.left-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: normal;
+  align-items: center;
+}
+.right-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.nota-venta-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+.formulario-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+.formulario-asignacion {
+  padding-top: 10px;
+  padding-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+.btn-verificar {
+  background-color: #008642;
+  color: #ffffff;
+}
+.botones,
+.botones-formulario {
+  display: flex;
+}
+.datos-faltantes {
+  width: 100%;
+  overflow-y: auto;
+  height: 450px;
+  padding-bottom: 10px;
+}
+.btn-cancelar {
+  background-color: #ee161f;
+  color: #ffffff;
+  margin: 0 10px;
+}
+.btn-editar {
+  background-color: #00a7de;
+  color: #ffffff;
+  margin: 0 10px;
+}
+.btn-aceptar {
+  background-color: #008642;
+  color: #ffffff;
+  margin: 0 10px;
+}
+.tabla-clientes {
+  width: 90%;
+}
+.tabla-resultado {
+  width: 100%;
+}
+.tabla-clientes th,
+.tabla-clientes td,
+.tabla-resultado th,
+.tabla-resultado td {
+  text-align: center;
+}
+.resultado-optimizacion,
+.edicion-propuesta,
+.informacion-propuesta,
+.tabla-saturaciones {
+  width: 90%;
+}
+.cliente {
+  width: 100%;
+}
+.cliente h2 {
+  margin: 0;
+  text-align: center;
+}
+.btn-saturaciones {
+  margin-top: 20px;
+  background-color: #00a7de;
+  color: #ffffff;
+}
+.seccion-saturaciones {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.tabla-saturaciones {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #fefefe;
+  border: 1px solid #888888;
+  width: 90%;
+}
+.pointer-event {
+  pointer-events: none;
+}
+.btn-cerrar {
+  background-color: #ee161f;
+  color: #ffffff;
+  margin-bottom: 20px;
+}
+.mapa {
+  width: 90%;
+}
+app-spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 93vh;
+  background-color: rgba(255, 255, 255, 0.7);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.no-hay-clientes {
+  height: 85vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media only screen and (max-width: 900px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+  }
+  .linea-separadora {
+    border-bottom: 1px solid #aaaaaa;
+  }
+  .nota-venta-container hr,
+  .formulario-container hr {
+    width: 95%;
+  }
+  app-tabla-saturaciones {
+    width: 100%;
+  }
+  .asignacion-clientes-container {
+    display: flex;
+    flex-direction: column;
+  }
+  .left-container {
+    width: 100%;
+    padding-bottom: 20px;
+  }
+  .right-container {
+    width: 100%;
+    padding-bottom: 20px;
+  }
+  .tabla-clientes th,
+  .tabla-clientes td,
+  .tabla-resultado th,
+  .tabla-resultado td {
+    font-size: 14px;
+  }
+}
+
+@media only screen and (min-width: 901px) {
+  .asignacion-clientes-container {
+    display: flex;
+    width: 100%;
+  }
+  .left-container,
+  .right-container {
+    width: 50%;
+    height: 470px;
+  }
+  .botones {
+    justify-content: space-evenly;
+    margin: auto;
+    width: 90%;
+  }
+  .botones-formulario {
+    justify-content: space-evenly;
+  }
+  .btn-saturaciones {
+    margin-top: 0;
+  }
+  .seccion-saturaciones {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 93vh;
+    background-color: rgba(255, 255, 255, 0.7);
+    z-index: 9999;
+  }
+  .confirmacion-resultado {
+    padding-top: 30%;
+    width: 100%;
+  }
+  .btn-cancelar,
+  .btn-editar,
+  .btn-aceptar {
+    margin: 0;
+  }
+  .ocultar-seccion-derecha {
+    width: 99%;
+  }
+  .tabla,
+  .formulario {
+    width: 90%;
+    height: 429px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 0 25px;
+  }
+  .scroll {
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+}

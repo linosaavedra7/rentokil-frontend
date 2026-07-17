@@ -1,0 +1,273 @@
+<app-navegacion [listaNavegacion]="listaNavegacion"></app-navegacion>
+
+<div class="container">
+  <div class="cliente" *ngIf="clienteSeleccionado.nombre !== ''">
+    <h2>
+      Cliente: {{ clienteSeleccionado.nombre }} {{ zonaClienteSeleccionado }}
+    </h2>
+    <hr />
+  </div>
+  <div
+    class="asignacion-clientes-container"
+    [ngClass]="{ 'pointer-event': mostrarTablaSaturaciones === true }"
+    *ngIf="listaClientes.length > 0"
+  >
+    <div
+      class="left-container"
+      [ngClass]="{ 'ocultar-seccion-derecha': mostrarSeccionDerecha === false,
+      scroll: mostrarClientes === false }"
+    >
+      <!-- SECCIÓN CLIENTES NUEVOS -->
+      <div class="nota-venta-container" *ngIf="mostrarClientes">
+        <h2 style="margin: 0">Clientes nuevos</h2>
+        <hr width="100%" />
+        <div class="tabla">
+          <table
+            *ngIf="listaClientes.length !== 0"
+            mat-table
+            [dataSource]="listaClientes"
+            class="mat-elevation-z5 tabla-clientes"
+          >
+            <ng-container matColumnDef="select">
+              <th mat-header-cell *matHeaderCellDef></th>
+              <td mat-cell *matCellDef="let row" style="padding-right: 10px">
+                <mat-checkbox
+                  (click)="$event.stopPropagation()"
+                  (change)="
+                    $event ? seleccion.toggle(row) : null;
+                    obtenerClienteSeleccionado()
+                  "
+                  [checked]="seleccion.isSelected(row)"
+                >
+                </mat-checkbox>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="rut">
+              <th mat-header-cell *matHeaderCellDef>Rut</th>
+              <td mat-cell *matCellDef="let cliente">{{ cliente.rut }}</td>
+            </ng-container>
+            <ng-container matColumnDef="nombre">
+              <th mat-header-cell *matHeaderCellDef>Nombre</th>
+              <td mat-cell *matCellDef="let cliente">{{ cliente.nombre }}</td>
+            </ng-container>
+            <ng-container matColumnDef="nota_venta">
+              <th mat-header-cell *matHeaderCellDef>Nota de venta</th>
+              <td mat-cell *matCellDef="let cliente">{{ cliente.nota_venta }}</td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="columnasTablaClientes"></tr>
+            <tr
+              mat-row
+              *matRowDef="let row; columns: columnasTablaClientes"
+              (click)="seleccion.toggle(row); obtenerClienteSeleccionado()"
+            ></tr>
+          </table>
+        </div>
+      </div>
+
+      <!-- SECCIÓN DATOS FALTANTES -->
+      <div class="datos-faltantes" *ngIf="hayDatosFaltantes">
+        <app-datos-faltantes
+          [informacionRequerida]="datosFaltantes"
+          [tiemposFaltantes]="tiemposFaltantes"
+          [horariosFaltantes]="horariosFaltantes"
+          [diasFaltantes]="diasFaltantes"
+          [latLongFaltantes]="latitudLongitudFaltantes"
+          (resultadoOptimizacionEvent)="obtenerResultadoOptimizacion($event)"
+          (eventoLoadingDatosFaltantes)="loading = $event"
+          (eventoMensajeSpinner)="mensajeSpinner = $event"
+        ></app-datos-faltantes>
+      </div>
+      <div class="confirmacion-resultado" *ngIf="mostrarConfirmacionPropuesta">
+        <h2 style="text-align: center">¿Acepta la propuesta de asignación?</h2>
+        <div class="botones">
+          <button
+            mat-raised-button
+            class="btn-cancelar"
+            (click)="descartarPropuesta()"
+          >
+            Cancelar
+          </button>
+          <button
+            mat-raised-button
+            class="btn-editar"
+            (click)="
+              editarAsignacion = true; mostrarConfirmacionPropuesta = false
+            "
+          >
+            Editar propuesta
+          </button>
+          <button
+            mat-raised-button
+            class="btn-aceptar"
+            (click)="aceptarPropuesta()"
+          >
+            Aceptar propuesta
+          </button>
+        </div>
+      </div>
+
+      <!-- SECCIÓN INFORMACION DE PROPUESTA ACEPTADA -->
+      <div
+        class="informacion-propuesta"
+        *ngIf="mostrarInformacionPropuestaAceptada"
+      >
+        <app-informacion-asignacion
+          [informacionAsignacion]="informacionPropuestaAceptada"
+        ></app-informacion-asignacion>
+      </div>
+
+      <!-- SECCIÓN EDICIÓN PROPUESTA -->
+      <div class="edicion-propuesta" *ngIf="editarAsignacion">
+        <app-edicion-propuesta
+          [informacionRequerida]="datosFaltantes"
+          [propuestaPrevia]="informacionPropuestaAceptada"
+          (eventoGuardar)="loading = $event"
+          (ocultarPropuestaPrevia)="mostrarSeccionDerecha = $event"
+          (mensaje)="mensajeSpinner = $event"
+          (eventoLoadingEdicion)="loading = $event"
+        ></app-edicion-propuesta>
+      </div>
+    </div>
+
+    <div
+      class="linea-separadora"
+      *ngIf="mostrarSeccionDerecha"
+      style="border: 1px solid #cccccc"
+    ></div>
+
+    <div class="right-container" *ngIf="mostrarSeccionDerecha" [ngClass]="{ scroll: mostrarClientes === false }">
+      <!-- SECCIÓN INFORMACIÓN REQUERIDA -->
+      <div class="formulario-container" *ngIf="mostrarFormulario">
+        <h2 style="margin-bottom: 0">Información requerida</h2>
+        <hr width="100%" />
+        <div class="formulario">
+          <form
+            class="formulario-asignacion"
+            [formGroup]="formularioInformacionRequerida"
+            (ngSubmit)="verificarDatosFaltantes()"
+          >
+            <mat-form-field appearance="fill">
+              <mat-label for="macrozona">Macrozona</mat-label>
+              <mat-select formControlName="macrozona">
+                <mat-option
+                  *ngFor="let macrozona of macrozonas | keyvalue : retornarCero"
+                  [value]="macrozona.key"
+                  >{{ macrozona.value }}</mat-option
+                >
+              </mat-select>
+              <mat-error *ngIf="formularioInformacionRequerida.invalid">{{
+                erroresFormulario("macrozona")
+              }}</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+              <mat-label for="dias-disponibles">Días disponibles</mat-label>
+              <mat-select formControlName="diasDisponible" multiple>
+                <mat-option
+                  *ngFor="let dia of listaDias | keyvalue : retornarCero"
+                  [value]="dia.key"
+                  >{{ dia.value }}</mat-option
+                >
+                <mat-option #todoSeleccionado (click)="seleccionarTodo()"
+                  >Todos los días</mat-option
+                >
+              </mat-select>
+              <mat-error *ngIf="formularioInformacionRequerida.invalid">{{
+                erroresFormulario("diasDisponible")
+              }}</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+              <mat-label for="horario-inicio">Horario inicio</mat-label>
+              <input
+                matInput
+                id="horario-inicio"
+                type="time"
+                formControlName="horarioInicio"
+              />
+              <mat-error *ngIf="formularioInformacionRequerida.invalid">{{
+                erroresFormulario("horarioInicio")
+              }}</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+              <mat-label for="horario-termino">Horario término</mat-label>
+              <input
+                matInput
+                id="horario-termino"
+                type="time"
+                formControlName="horarioTermino"
+              />
+              <mat-error *ngIf="formularioInformacionRequerida.invalid">{{
+                erroresFormulario("horarioTermino")
+              }}</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+              <mat-label for="dia-logistico">Día logístico</mat-label>
+              <mat-select formControlName="diaLogistico">
+                <mat-option
+                  *ngFor="let dias of diasLogisticos | keyvalue : retornarCero"
+                  [value]="dias.key"
+                  >{{ dias.value }}</mat-option
+                >
+              </mat-select>
+              <mat-error *ngIf="formularioInformacionRequerida.invalid">{{
+                erroresFormulario("diaLogistico")
+              }}</mat-error>
+            </mat-form-field>
+            <div class="botones-formulario">
+              <button
+                mat-raised-button
+                *ngIf="mostrarFormulario"
+                class="btn-saturaciones"
+                type="button"
+                (click)="mostrarTablaSaturaciones = true"
+              >
+                Ver saturaciones
+              </button>
+              <button
+                mat-raised-button
+                class="btn-verificar"
+                type="submit"
+                [disabled]="formularioInformacionRequerida.invalid"
+              >
+                Verificar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- SECCIÓN RESULTADO OPTIMIZACIÓN -->
+      <div class="resultado-optimizacion" *ngIf="resultadoAsignacion">
+        <h2 style="text-align: center" *ngIf="editarAsignacion">
+          Propuesta previa
+        </h2>
+        <app-resultado-optimizacion
+          [datosOptimizacion]="resultado"
+        ></app-resultado-optimizacion>
+      </div>
+
+      <div class="mapa" *ngIf="resultadoAsignacion">
+        <app-mapa
+          [listado_direcciones]="listado_direcciones"
+          [coordenadas]="coordenadas"
+        ></app-mapa>
+      </div>
+    </div>
+  </div>
+  <div class="seccion-saturaciones" *ngIf="mostrarTablaSaturaciones">
+    <div class="tabla-saturaciones">
+      <app-tabla-saturaciones></app-tabla-saturaciones>
+      <button
+        mat-raised-button
+        class="btn-cerrar"
+        type="button"
+        (click)="mostrarTablaSaturaciones = false"
+      >
+        Cerrar
+      </button>
+    </div>
+  </div>
+  <div class="no-hay-clientes" *ngIf="listaClientes.length == 0">
+    <p style="color: #cccccc">No hay clientes nuevos por asignar</p>
+  </div>
+  <app-spinner *ngIf="loading" [mensaje]="mensajeSpinner"></app-spinner>
+</div>

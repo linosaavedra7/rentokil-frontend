@@ -1,0 +1,14 @@
+<ul class="breadcrumb">
+  <li *ngFor="let item of listaNavegacion">{{ item }}</li>
+  <div class = "btn-descarga" *ngIf = "listaNavegacion[1] == 'Revisar rutas'" >
+    <button
+          mat-raised-button
+          type="button"
+          class="btn-obtener"
+          (click) = "descargar_archivo_modificaciones()"
+        >
+          Modificaciones
+    </button>
+  </div>
+</ul>
+<hr class="separador" />

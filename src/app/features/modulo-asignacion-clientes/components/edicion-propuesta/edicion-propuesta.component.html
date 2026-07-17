@@ -1,0 +1,228 @@
+<div class="container">
+  <mat-tab-group
+    class="ediciones-container"
+    [ngClass]="{ 'pointer-event': mostrarTablaSaturaciones === true }"
+    mat-stretch-tabs
+    *ngIf="mostrarSeccionEditar"
+  >
+    <mat-tab label="Editar mediante modelo">
+      <div class="info-cliente"></div>
+      <form
+        [formGroup]="formularioEdicionModelo"
+        class="formulario-edicion"
+        (ngSubmit)="verificarDatosFaltantes()"
+      >
+        <mat-form-field appearance="fill">
+          <mat-label for="macrozona">Macrozona</mat-label>
+          <input matInput id="macrozona" type="text" formControlName="zona" />
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label for="dias-disponibles">Días disponibles</mat-label>
+          <input
+            matInput
+            id="dias-disponibles"
+            type="text"
+            formControlName="dias"
+          />
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label for="horario">Horario</mat-label>
+          <input matInput id="horario" type="text" formControlName="horario" />
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label for="dia-logistico">Día logístico</mat-label>
+          <mat-select formControlName="diaLogistico">
+            <mat-option
+              *ngFor="let dias of diasLogisticos | keyvalue : retornarCero"
+              [value]="dias.key"
+              >{{ dias.value }}</mat-option
+            >
+          </mat-select>
+        </mat-form-field>
+        <div class="botones">
+          <button
+            mat-raised-button
+            class="btn-saturaciones"
+            type="button"
+            (click)="mostrarTablaSaturaciones = true"
+          >
+            Ver saturaciones
+          </button>
+          <button
+            mat-raised-button
+            class="btn-guardar"
+            type="submit"
+            [disabled]="formularioEdicionModelo.invalid"
+          >
+            Verificar datos
+          </button>
+        </div>
+      </form>
+    </mat-tab>
+    <mat-tab label="Editar manualmente">
+      <h2 class="titulo">Se necesita la siguiente información:</h2>
+      <form
+        class="formulario-edicion-manual"
+        [formGroup]="formularioEdicionManual"
+        (ngSubmit)="generarPropuesta()"
+      >
+        <mat-form-field appearance="fill">
+          <mat-label>Grupo logístico</mat-label>
+          <mat-select
+            formControlName="grupoLogistico"
+            (selectionChange)="obtenerDias($event)"
+          >
+            <mat-option
+              *ngFor="let grupo of gruposLogisticos"
+              [value]="grupo"
+              >{{ grupo }}</mat-option
+            >
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Día logístico</mat-label>
+          <mat-select formControlName="diaLogistico">
+            <mat-option
+              *ngFor="let dias of diasLogisticosGrupoLog"
+              [value]="dias"
+              >{{ dias }}</mat-option
+            >
+          </mat-select>
+        </mat-form-field>
+        <div class="botones">
+          <button
+            mat-raised-button
+            class="btn-saturaciones"
+            type="button"
+            (click)="mostrarTablaSaturaciones = true"
+          >
+            Ver saturaciones
+          </button>
+          <button
+            mat-raised-button
+            class="btn-generar"
+            type="submit"
+            [disabled]="formularioEdicionManual.invalid"
+          >
+            Generar propuesta
+          </button>
+        </div>
+      </form>
+    </mat-tab>
+  </mat-tab-group>
+  <div
+    class="datos-faltantes"
+    [ngClass]="{ 'pointer-event': mostrarTablaSaturaciones === true }"
+    *ngIf="mostrarDatosFaltantes"
+  >
+    <app-datos-faltantes
+      [informacionRequerida]="informacionRequerida"
+      [tiemposFaltantes]="tiemposFaltantes"
+      [horariosFaltantes]="horariosFaltantes"
+      [diasFaltantes]="diasFaltantes"
+      [latLongFaltantes]="latitudLongitudFaltantes"
+      [esEditarAsignacion]="true"
+      (resultadoOptimizacionEvent)="obtenerDatosResultadoOptimizacion($event)"
+      (eventoMensajeSpinner)="mensaje.emit($event)"
+      (eventoLoadingDatosFaltantes)="eventoLoadingEdicion.emit($event)"
+    ></app-datos-faltantes>
+  </div>
+  <div class="info-propuesta-previa" *ngIf="mostrarInformacionPropuestaPrevia">
+    <app-informacion-asignacion
+      [informacionAsignacion]="propuestaPrevia"
+    ></app-informacion-asignacion>
+  </div>
+  <div
+    class="seccion-info-propuesta"
+    [ngClass]="{ 'propuesta-aceptada': mostrarInformacionPropuestaAceptada }"
+    *ngIf="!mostrarInformacionPropuestaPrevia"
+  >
+    <app-informacion-asignacion
+      *ngIf="mostrarInformacionPropuestaAceptada"
+      style="width: 50%"
+      [informacionAsignacion]="informacionPropuestaAceptada"
+    ></app-informacion-asignacion>
+    <div
+      class="linea-separadora"
+      *ngIf="mostrarInformacionPropuestaAceptada"
+      style="border: 1px solid #cccccc; margin: 0 40px"
+    ></div>
+    <div
+      class="seccion-info-propuesta"
+      [ngClass]="{ 'w-50': mostrarInformacionPropuestaAceptada }"
+    >
+      <div
+        class="resultado-optimizacion"
+        [ngClass]="{ 'pointer-event': mostrarTablaSaturaciones === true }"
+        *ngIf="mostrarResultadoOptimizacion"
+      >
+        <h2 style="text-align: center">Propuesta actual</h2>
+        <app-resultado-optimizacion
+          [datosOptimizacion]="datosResultadoOptimizacion"
+        ></app-resultado-optimizacion>
+      </div>
+      <div
+        class="mapa"
+        [ngClass]="{ 'pointer-event': mostrarTablaSaturaciones === true }"
+        *ngIf="mostrarResultadoOptimizacion"
+      >
+        <app-mapa
+          [listado_direcciones]="listado_direcciones"
+          [coordenadas]="coordenadas"
+        ></app-mapa>
+      </div>
+    </div>
+
+    <div
+      class="resultado-optimizacion"
+      [ngClass]="{ 'pointer-event': mostrarTablaSaturaciones === true }"
+      *ngIf="mostrarBotones"
+    >
+      <div class="botones-acciones">
+        <button
+          mat-raised-button
+          class="btn-cancelar"
+          (click)="cancelarAsignaciones()"
+        >
+          Descartar propuestas
+        </button>
+        <button
+          mat-raised-button
+          class="btn-guardar"
+          (click)="guardarAsignacionActual()"
+        >
+          Guardar propuesta actual
+        </button>
+        <button
+          mat-raised-button
+          class="btn-guardar"
+          (click)="guardarAsignacionPrevia()"
+        >
+          Guardar propuesta previa
+        </button>
+      </div>
+      <div class="volver">
+        <button
+          mat-raised-button
+          class="btn-cancelar"
+          type="button"
+          (click)="volver()"
+        >
+          Volver
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="seccion-saturaciones" *ngIf="mostrarTablaSaturaciones">
+    <div class="tabla-saturaciones">
+      <app-tabla-saturaciones></app-tabla-saturaciones>
+      <button
+        mat-raised-button
+        class="btn-cerrar"
+        (click)="mostrarTablaSaturaciones = false"
+      >
+        Cerrar
+      </button>
+    </div>
+  </div>
+</div>

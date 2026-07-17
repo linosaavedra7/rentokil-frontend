@@ -1,0 +1,151 @@
+.left-container,
+.right-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.info-requerida {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 90%;
+}
+.linea-separadora {
+  border: 1px solid #cccccc;
+}
+.inicio {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.texto-inicio {
+  color: #aaaaaa;
+}
+table th {
+  border: 1px solid #c0c0c0;
+  padding: 0 5px;
+  background: #f0f0f0;
+  text-align: center;
+}
+table td {
+  border: 1px solid #c0c0c0;
+  padding: 5px;
+  text-align: center;
+}
+.seleccionado_blanco {
+  background-color: grey;
+}
+.seleccionado_verde {
+  background-color: green;
+}
+.seleccionado_amarillo {
+  background-color: yellow;
+}
+.seleccionado_rojo {
+  background-color: red;
+}
+
+@media only screen and (max-width: 900px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+  }
+  .left-container,
+  .right-container {
+    width: 100%;
+  }
+  .right-container {
+    margin-top: 10px;
+  }
+  .linea-separadora {
+    width: 95%;
+  }
+  .inicio {
+    position: relative;
+    top: 50%;
+  }
+  .tabla-grupos-logisticos {
+    height: 50vh;
+  }
+  table {
+    border: 1px solid #c0c0c0;
+    border-collapse: collapse;
+    display: block;
+    overflow-x: auto;
+    padding: 10px;
+    height: 95%;
+  }
+  mat-form-field {
+    width: inherit;
+  }
+  .info-ruta {
+    width: 90%;
+  }
+  #mapa {
+    visibility: hidden;
+    top: 25px;
+    width: 90%;
+    height: 350px;
+    border-radius: 5%;
+  }
+}
+
+@media only screen and (min-width: 901px) {
+  .container {
+    display: flex;
+    align-items: center;
+    height: 80vh;
+  }
+  .left-container,
+  .right-container {
+    width: 50%;
+  }
+  .right-container {
+    height: 100%;
+  }
+  .left-container {
+    overflow-y: hidden;
+  }
+  .linea-separadora {
+    height: 100%;
+  }
+  .inicio {
+    position: relative;
+    top: 50%;
+  }
+  .tabla-grupos-logisticos {
+    height: 50vh;
+    width: 90%;
+  }
+
+  table {
+    border: 1px solid #c0c0c0;
+    border-collapse: collapse;
+    display: block;
+    overflow-x: auto;
+    padding: 5px;
+    height: 100%;
+  }
+  table th,
+  table td {
+    width: 1%;
+  }
+  mat-form-field {
+    width: 70%;
+  }
+
+  .info-ruta {
+    width: 90%;
+  }
+  #mapa {
+    visibility: hidden;
+    top: 25px;
+    width: 90%;
+    height: 350px;
+    border-radius: 5%;
+  }
+}

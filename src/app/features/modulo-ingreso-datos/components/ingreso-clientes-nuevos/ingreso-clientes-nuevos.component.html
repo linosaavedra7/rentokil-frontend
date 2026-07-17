@@ -1,0 +1,400 @@
+<app-navegacion [listaNavegacion]="listaNavegacion"></app-navegacion>
+<div class="clientes-nuevos">
+  <div class="tipo-ingreso">
+    <mat-slide-toggle
+      color="primary"
+      (toggleChange)="ingresoMasivo = !ingresoMasivo; limpiarDatos()"
+      >Ingreso masivo</mat-slide-toggle
+    >
+  </div>
+  <!-- Ingreso manual -->
+  <div class="ingreso-manual" *ngIf="!ingresoMasivo">
+    <form class="formulario-manual" [formGroup]="formularioManual">
+      <h1>Ingreso manual de clientes nuevos</h1>
+      <div class="info-nota-venta">
+        <h3>Nota de venta</h3>
+        <div class="fila-1">
+          <mat-form-field appearance="fill">
+            <mat-label for="nota-venta">Nota de venta</mat-label>
+            <!--formControlName="notaVenta"-->
+            <input
+              matInput
+              id="nota-venta"
+              type="text"
+              formControlName="notaVenta"
+            />
+            <!---<mat-autocomplete AutoActiveFirstOption #auto="matAutocomplete">
+              <mat-option
+                *ngFor="let data of filtro_datos_cliente | async"
+                [value]="data"
+              >
+              </mat-option>
+            </mat-autocomplete>--->
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label for="tipo-nota-venta">Tipo Nota de venta</mat-label>
+            <input
+              matInput
+              id="tipo-nota-venta"
+              type="text"
+              formControlName="tipoNotaVenta"
+              [matAutocomplete]="auto"
+            />
+            <mat-autocomplete AutoActiveFirstOption #auto="matAutocomplete">
+              <mat-option
+                *ngFor="let data of filtro_datos_cliente | async"
+                [value]="data"
+              >
+              </mat-option>
+            </mat-autocomplete>            
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="info-cliente">
+        <h3>Información cliente</h3>
+        <div class="fila-1">
+          <mat-form-field appearance="fill">
+            <mat-label for="rut">Rut</mat-label>
+            <input matInput 
+              id="rut" 
+              type="text" 
+              formControlName="rut" 
+            />
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label for="nombre-fantasia">Nombre de fantasía</mat-label>
+            <input
+              matInput
+              id="nombre-fantasia"
+              type="text"
+              formControlName="nombreFantasia"
+            />
+          </mat-form-field>
+        </div>
+        <div class="fila-2">
+          <mat-form-field appearance="fill">
+            <mat-label for="razon-social">Razón social</mat-label>
+            <input
+              matInput
+              id="razon-social"
+              type="text"
+              formControlName="razonSocial"
+            />
+          </mat-form-field>
+          <!---<mat-form-field appearance="fill">
+            <mat-label for="direccion-logistica">Dirección logística</mat-label>
+            <input
+              matInput
+              id="direccion-logistica"
+              type="text"
+              formControlName="direccionLogistica"
+              [matAutocomplete]="auto"
+            />
+          </mat-form-field>--->
+          <mat-form-field appearance="fill">
+            <mat-label for="direccion-logistica">Dirección logística</mat-label>
+              <input
+                matInput
+                id="direccion-logistica"
+                type="text"
+                formControlName="direccionLogistica"
+                (ngModelChange)="search($event)"
+                [matAutocomplete]="direccionAuto"
+              />
+              <mat-autocomplete #direccionAuto="matAutocomplete">
+                <div *ngIf="direccion_selecionada == ''">
+                  <mat-option
+                    *ngFor="let option of direcciones"
+                    [value]="option"
+                    (click)="onSelect(option)"
+                  >
+                    <mat-icon>location_on</mat-icon>
+                    {{ option }}
+                  </mat-option>
+                </div>
+              </mat-autocomplete>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="info-visita">
+        <h3>Visita</h3>
+        <div *ngIf="dias_logisticos.length != 0">
+          <h3>Selecciona dia logistico :</h3>
+        </div>
+        <div
+          style="display: flex; justify-content: space-evenly; flex-wrap: wrap"
+        >
+          <ng-container *ngFor="let dia_log of dias_logisticos; let i = index">
+            <button
+              mat-button
+              class="btn-servicio"
+              style="display: inline-block; margin-bottom: 20px; width: 10%"
+              (click)="autocompletar_visita(dia_log)"
+              [attr.id]="dia_log"
+            >
+              {{ dia_log }}
+            </button>
+          </ng-container>
+        </div>
+        <div class="fila-1" style="justify-content: center">
+          <!---<mat-form-field appearance="fill">
+            <mat-label for="dia-logistico">Día logístico</mat-label>
+            <input
+              matInput
+              id="dia-logistico"
+              type="text"
+              formControlName="diaLogistico"
+              [matAutocomplete]="auto"
+            />
+            <mat-autocomplete AutoActiveFirstOption #auto="matAutocomplete">
+              <mat-option
+                *ngFor="let data of filtro_datos_visita | async"
+                [value]="data"
+              >
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>--->
+          <mat-form-field appearance="fill">
+            <mat-label for="dia-permitido">Día permitido</mat-label>
+            <mat-select formControlName="diaPermitido" multiple>
+              <mat-option
+                *ngFor="let dia of listaDias | keyvalue : retornarCero"
+                [value]="dia.key"
+                >{{ dia.value }}</mat-option
+              >
+              <mat-option #todoSeleccionado (click)="seleccionarTodo()"
+                >Todos los días</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label for="semana-permitida">Semana permitida</mat-label>
+            <mat-select formControlName="semanaPermitida" multiple>
+              <mat-option
+                *ngFor="let semana of listaSemanas | keyvalue : retornarCero"
+                [value]="semana.key"
+              >
+                {{ semana.value }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="fila-2">
+          <mat-form-field appearance="fill">
+            <mat-label for="horario-inicio">Horario inicio</mat-label>
+            <input
+              matInput
+              id="horario-inicio"
+              type="time"
+              formControlName="horarioInicio"
+            />
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label for="horario-final">Horario final</mat-label>
+            <input
+              matInput
+              id="horario-final"
+              type="time"
+              formControlName="horarioFinal"
+            />
+          </mat-form-field>
+          <mat-checkbox
+            style="margin-left: 5px"
+            id="restriccionInduccion"
+            formControlName="restriccionInduccion"
+            >Restricción inducción</mat-checkbox
+          >
+        </div>
+      </div>
+      <div class="info-servicio">
+        <h3>Servicio</h3>
+        <div
+          formArrayName="servicios"
+          *ngFor="let servicio of servicios.controls; let i = index"
+        >
+          <div [formGroupName]="i">
+            <mat-form-field appearance="fill">
+              <mat-label for="nombre-servicio">Nombre servicio</mat-label>
+              <input
+                matInput
+                id="nombre-servicio"
+                type="text"
+                [attr.id]="'nombre' + i"
+                formControlName="nombre"
+              />
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+              <mat-label for="cantidad">Cantidad</mat-label>
+              <input
+                matInput
+                id="cantidad"
+                type="number"
+                min="1"
+                [attr.id]="'cantidad' + i"
+                formControlName="cantidad"
+              />
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+              <mat-label for="sublinea">Sublínea</mat-label>
+              <mat-select formControlName="sublinea">
+                <mat-option
+                  *ngFor="
+                    let sublinea of listaSublineas | keyvalue : retornarCero
+                  "
+                  [attr.id]="'sublinea'"
+                  [value]="sublinea.key"
+                  >{{ sublinea.value }}</mat-option
+                >
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <button
+          mat-button
+          class="btn-servicio"
+          style="margin-bottom: 20px"
+          type="submit"
+          (click)="agregar_servicios('', '', '')"
+        >
+          +
+        </button>
+        <button
+          mat-button
+          class="btn-remover"
+          style="margin-left: 20px"
+          (click)="remover_servicios()"
+        >
+          -
+        </button>
+      </div>
+      <button
+        mat-raised-button
+        class="btn-manual"
+        style="margin-bottom: 20px"
+        type="submit"
+        (click)="agregar_cliente_manual()"
+      >
+        Guardar
+      </button>
+    </form>
+  </div>
+
+  <!-- Ingreso masivo -->
+  <div class="ingreso-masivo" *ngIf="ingresoMasivo">
+    <h1 style="margin: 0">Ingreso masivo de clientes nuevos</h1>
+    <img src="./assets/img/file.png" alt="icono archivo" width="100px" />
+    <form class="formulario-masivo" [formGroup]="formularioMasivo">
+      <div class="formato-tabla">
+        <p>Formato archivo notas de venta</p>
+        <app-formato-archivo
+          [columnasArchivo]="columnasArchivoTiemposTeoricos"
+        ></app-formato-archivo>
+      </div>
+      <div class="form-control">
+        <mat-accordion>
+          <mat-expansion-panel [(expanded)]="estadoPanelTiemposTeoricos">
+            <mat-expansion-panel-header>
+              <mat-panel-title>Notas de venta</mat-panel-title>
+            </mat-expansion-panel-header>
+            <label class="cargar-archivo" for="tiempos-teoricos"
+              >Cargar archivo</label
+            >
+            <input
+              class="input-personalizado"
+              formControlName="archivoTiemposTeoricos"
+              type="file"
+              (change)="
+                obtenerNombreArchivoTiemposTeoricos();
+                estadoPanelTiemposTeoricos = false;
+                onFileChange($event, 'nota_venta')
+              "
+              id="tiempos-teoricos"
+              name="tiempos-teoricos"
+              accept=".csv, .xlsx"
+            />
+          </mat-expansion-panel>
+        </mat-accordion>
+        <span class="nombre-archivo">{{ nombreArchivoTiemposTeoricos }}</span>
+      </div>
+      <div class="formato-tabla">
+        <p>Formato archivo restricciones</p>
+        <app-formato-archivo
+          [columnasArchivo]="columnasArchivoRestricciones"
+        ></app-formato-archivo>
+      </div>
+      <div class="form-control">
+        <mat-accordion>
+          <mat-expansion-panel [(expanded)]="estadoPanelRestricciones">
+            <mat-expansion-panel-header>
+              <mat-panel-title>Restricciones</mat-panel-title>
+            </mat-expansion-panel-header>
+            <label class="cargar-archivo" for="restricciones"
+              >Cargar archivo</label
+            >
+            <input
+              class="input-personalizado"
+              formControlName="archivoRestricciones"
+              type="file"
+              (change)="
+                obtenerNombreArchivoRestricciones();
+                estadoPanelRestricciones = false;
+                onFileChange($event, 'restricciones')
+              "
+              id="restricciones"
+              name="restricciones"
+              accept=".csv, .xlsx"
+            />
+          </mat-expansion-panel>
+        </mat-accordion>
+        <span class="nombre-archivo">{{ nombreArchivoRestricciones }}</span>
+      </div>
+      <button
+        mat-raised-button
+        class="btn-masivo"
+        style="margin-bottom: 20px"
+        type="button"
+        [disabled]="formularioMasivo.invalid"
+        (click)="enviar_archivos()"
+      >
+        Guardar
+      </button>
+    </form>
+  </div>
+  <app-spinner *ngIf="loading" [mensaje]= "mensaje"></app-spinner>
+</div>
+
+<!---<mat-form-field appearance="fill">
+            <mat-label for="direccion-logistica">Dirección logística</mat-label>
+            <input
+              matInput
+              id="direccion-logistica"
+              type="text"
+              formControlName="direccionLogistica"
+              [matAutocomplete]="auto"
+            />
+          </mat-form-field>--->
+<!---
+<form class="example-form">
+  <mat-form-field class="example-full-width" appearance="fill">
+    <mat-label>Dirección logística</mat-label>
+    <input type="text"
+           id = "dir"
+           placeholder="Pick one"
+           aria-label="Number"
+           matInput
+           [formControl]="myControl"
+           (ngModelChange)="search($event)"
+           [matAutocomplete]="auto">
+    <mat-autocomplete #auto="matAutocomplete">
+      <div *ngIf="direccion_selecionada == '' ">
+        <mat-option *ngFor="let option of direcciones" [value]="option" (click)="onSelect(option)">
+          <mat-icon>location_on</mat-icon>
+          {{option}}
+        </mat-option>
+      </div>
+    </mat-autocomplete>
+  </mat-form-field>
+</form>
+
+-->

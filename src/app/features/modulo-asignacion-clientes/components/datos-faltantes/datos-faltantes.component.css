@@ -1,0 +1,53 @@
+label {
+  padding-right: 10px;
+}
+mat-card {
+  margin-bottom: 20px;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  margin: auto;
+}
+.titulo {
+  margin: 0;
+  text-align: center;
+}
+.tiempos-container,
+.horarios-container,
+.dias-container,
+.latitudes-longitudes-container {
+  padding: 10px 0;
+}
+.tiempos,
+.horarios,
+.dias,
+.latitudes-longitudes {
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+}
+.btn {
+  text-align: center;
+  padding-bottom: 20px;
+}
+.btn-generar {
+  background-color: #008642;
+  color: #ffffff;
+}
+.btn-editar-dir {
+  background-color: #ee161f;
+  color: #ffffff;
+}
+.btn-predeterminado {
+  background-color: #00a7de;
+  color: #ffffff;
+  margin: 10px auto;
+}
+
+@media only screen and (max-width: 900px) {
+}
+
+@media only screen and (min-width: 901px) {
+}

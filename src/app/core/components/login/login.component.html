@@ -1,0 +1,54 @@
+<div class="login-container">
+  <div class="form-container" *ngIf="!loading">
+    <mat-card class="back-color">
+      <div class="formulario">
+        <img src="../../../assets/img/user.png" alt="usuario" width="30%" />
+        <h1>Iniciar sesión</h1>
+        <form [formGroup]="loginForm" (ngSubmit)="verificarCredenciales()">
+          <mat-form-field class="width-90" appearance="fill">
+            <mat-label for="username">Nombre de usuario</mat-label>
+            <input
+              matInput
+              id="username"
+              type="username"
+              formControlName="username"
+              autocomplete="off"
+            />
+          </mat-form-field>
+          <mat-form-field class="width-90" appearance="fill">
+            <mat-label for="password">Contraseña</mat-label>
+            <input
+              matInput
+              id="password"
+              type="password"
+              formControlName="password"
+            />
+          </mat-form-field>
+          <button
+            class="width-90 height-50 btn-color"
+            mat-raised-button
+            type="submit"
+            [disabled]="loginForm.invalid"
+          >
+            Ingresar
+          </button>
+        </form>
+      </div>
+      <div class="info-sistema">
+        <img
+          class="logo-plataforma"
+          src="/assets/img/logo-sistema.png"
+          alt="Logo sistema"
+        />
+        <img
+          class="logo-empresa"
+          src="/assets/img/logo.svg"
+          alt="Logo Rentokil Initial"
+        />
+      </div>
+    </mat-card>
+  </div>
+  <div class="spinner" *ngIf="loading">
+    <app-spinner [mensaje]="'Verificando credenciales'"></app-spinner>
+  </div>
+</div>

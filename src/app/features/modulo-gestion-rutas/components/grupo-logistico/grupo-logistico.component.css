@@ -1,0 +1,66 @@
+.formulario-container {
+  height: 67vh;
+  margin-top: 30px;
+}
+.formulario-grupo-logistico,
+.formulario-dias-operacion,
+.formulario-editar-ejecutivo {
+  height: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.formulario-dias-operacion,
+.formulario-editar-ejecutivo {
+  margin-top: 30px;
+}
+app-spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.7);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media only screen and (max-width: 900px) {
+  .centrar {
+    text-align: center;
+  }
+  mat-form-field {
+    width: 80%;
+  }
+  .btn-agregar {
+    background-color: green;
+    color: white;
+    width: 200px;
+    height: 50px;
+    margin-bottom: 30px;
+  }
+}
+
+@media only screen and (min-width: 901px) {
+  .formulario-grupo-logistico {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .centrar {
+    text-align: center;
+  }
+  mat-form-field {
+    width: 60%;
+  }
+  .btn-agregar {
+    background-color: green;
+    color: white;
+    width: 200px;
+    height: 50px;
+    margin-bottom: 30px;
+  }
+}

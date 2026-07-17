@@ -1,0 +1,157 @@
+<div *ngIf="loading">
+  <app-spinner [mensaje]="mensajeSpinner"></app-spinner>
+</div>
+
+<!---MODAL CON INFORMACION DE CLIENTES Y SUS SERVICIOS REPETIDOS--->
+
+<div *ngIf="modal_ser && !loading">
+  <h1 class="titulos-modal">Información de servicios ya existentes</h1>
+  <div *ngFor="let nota_venta of clientes_unicos; index as i">
+    <div *ngFor="let nota_venta of clientes_unicos; index as i">
+      <ul>
+        <div style="text-align: center; font-weight: bold;">
+           - {{nota_venta[0]}}--{{nota_venta[2]}}--{{nota_venta[1]}} :
+        </div>
+        
+        <li style="list-style: none;">
+          <div *ngFor="let servicios of servicios_repetidos; index as j">
+            <ul>
+              <div *ngIf="nota_venta[0] == servicios[0]">
+                <li>
+                  {{ servicios[3] }} -- {{ servicios[4] }} -- {{ servicios[5] }}
+                </li>
+              </div>
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="botones-modal">
+    <button
+      mat-button
+      class="btn-modal-aceptar"
+      type="submit"
+      (click)="modal_direcciones()"
+      (click)="
+        dir_mal_escritas.length == 0 ? set_loading(true) : set_loading(false)
+      "
+    >
+      Aceptar
+    </button>
+    <button
+      mat-button
+      class="btn-modal-cancelar"
+      type="submit"
+      (click)="cancelar_archivos()"
+    >
+      Cancelar
+    </button>
+  </div>
+</div>
+
+<!--- MODAL CON INFORMACION DE DIRECCIONES MAL ESCRITAS--->
+
+<div *ngIf="modal_dir && !loading">
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+  />
+  <h1 class="titulos-modal">Información de direcciones mal escritas</h1>
+  <div
+    style="display: flex; justify-content: space-between; align-items: center"
+    *ngFor="let direcciones of dir_mal_escritas; index as i"
+  >
+    <ul>
+      <li class="lista-direcciones">
+        {{ dir_mal_escritas[i][0] }} -- {{ dir_mal_escritas[i][1] }}
+        <ul>
+          <li>{{ dir_mal_escritas[i][2] }}</li>
+        </ul>
+      </li>
+    </ul>
+    <button
+      mat-button
+      [attr.id]="'boton' + i"
+      class="btn-modal-editar"
+      (click)="modal_mapa(i)"
+    >
+      <i class="fa fa-map-marker"></i>
+    </button>
+  </div>
+
+  <div class = "titulos-modal" *ngIf = "faltan_dir">
+    <h4 style = "color: red;">*Faltan direcciones*</h4>
+  </div>
+
+  <div class="botones-modal">
+    <button
+      mat-button
+      class="btn-modal-aceptar"
+      type="submit"
+      (click)="modal_final()"
+    >
+      Aceptar
+    </button>
+    <button
+      mat-button
+      class="btn-modal-cancelar"
+      type="submit"
+      (click)="info.length != 0 ? modal_servicios() : cancelar_archivos()"
+    >
+      Volver
+    </button>
+  </div>
+</div>
+
+<!--- MODAL CON INFORMACION DE DIRECCIONES MAL ESCRITAS --->
+
+<div *ngIf="modal_map">
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+  />
+
+  <h1 class="titulos-modal">Seleccione la ubicación en el mapa</h1>
+  <h1 class="titulos-modal" style="font-size: 20px">
+    {{ direccion_unica }}
+    <i class="fa fa-map-marker" style="padding-left: 2%"></i>
+  </h1>
+  <div id="map" style="width: 500px; height: 400px; border-radius: 5%"></div>
+
+  <div class="botones-modal">
+    <button
+      mat-button
+      class="btn-modal-aceptar"
+      type="submit"
+      (click)="modal_direcciones()"
+      (click)="set_loading(false)"
+    >
+      Guardar
+    </button>
+  </div>
+</div>
+
+<div *ngIf="modal_fin && !loading">
+  <h1 class="titulos-modal">¿Subir nueva información?</h1>
+  <div class="botones-modal">
+    <button
+      mat-button
+      class="btn-modal-aceptar"
+      type="submit"
+      style="width: 29%"
+      (click)="guardar_todo()"
+    >
+      Aceptar
+    </button>
+    <button
+      mat-button
+      class="btn-modal-cancelar"
+      type="submit"
+      style="width: 30.5%"
+      (click)="cancelar_archivos()"
+    >
+      Cancelar
+    </button>
+  </div>
+</div>

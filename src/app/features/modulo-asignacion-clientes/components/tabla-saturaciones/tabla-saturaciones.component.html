@@ -1,0 +1,81 @@
+<div class="modal-content">
+  <h2 style="text-align: center">Saturaciones</h2>
+  <div class="botones">
+    <button
+      mat-raised-button
+      class="btn-ordenar"
+      [ngClass]="{ 'btn-activo': tablaSaturacionesPorDiaLogistico }"
+      type="button"
+      (click)="ordenarTabla('dia')"
+    >
+      Ordenar por día logístico
+    </button>
+    <button
+      mat-raised-button
+      class="btn-ordenar"
+      [ngClass]="{ 'btn-activo': tablaSaturacionesPorSemanaLogistica }"
+      type="button"
+      (click)="ordenarTabla('semana')"
+    >
+      Ordenar por semana logística
+    </button>
+  </div>
+  <table class="tabla-saturaciones" *ngIf="tablaSaturacionesPorDiaLogistico">
+    <thead>
+      <tr>
+        <th>Grupo logístico</th>
+        <th>Macrozona</th>
+        <th *ngFor="let dias of diasLogisticosOrdenadosPorDia">
+          {{ dias }}
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let fila of matrizSaturacionesPorDia">
+        <ng-container *ngFor="let columna of fila">
+          <th *ngIf="esString(columna)">{{ columna }}</th>
+          <td
+            [ngClass]="{
+              blanco: columna.toFixed(2) >= 40,
+              verde: columna.toFixed(2) > 40 && columna.toFixed(2) < 75,
+              amarillo: columna.toFixed(2) >= 75 && columna.toFixed(2) < 85,
+              rojo: columna.toFixed(2) >= 85
+            }"
+            *ngIf="esNumero(columna)"
+          >
+            {{ columna.toFixed(2) }}%
+          </td>
+        </ng-container>
+      </tr>
+    </tbody>
+  </table>
+  <table class="tabla-saturaciones" *ngIf="tablaSaturacionesPorSemanaLogistica">
+    <thead>
+      <tr>
+        <th>Grupo logístico</th>
+        <th>Macrozona</th>
+        <th *ngFor="let dias of diasLogisticosOrdenadosPorSemana">
+          {{ dias }}
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let fila of matrizSaturacionesPorSemana">
+        <ng-container *ngFor="let columna of fila">
+          <th *ngIf="esString(columna)">{{ columna }}</th>
+          <td
+            [ngClass]="{
+              blanco: columna.toFixed(2) >= 40,
+              verde: columna.toFixed(2) > 40 && columna.toFixed(2) < 75,
+              amarillo: columna.toFixed(2) >= 75 && columna.toFixed(2) < 85,
+              rojo: columna.toFixed(2) >= 85
+            }"
+            *ngIf="esNumero(columna)"
+          >
+            {{ columna.toFixed(2) }}%
+          </td>
+        </ng-container>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,121 @@
+<app-navegacion [listaNavegacion]="listaNavegacion"></app-navegacion>
+<div class="clientes-antiguos">
+  <div class="ingreso-masivo">
+    <h1 style="padding-bottom: 10px" class="centrar-texto">
+      Ingreso masivo de clientes antiguos
+    </h1>
+    <img src="./assets/img/file.png" alt="icono archivo" width="100px" />
+    <form
+      class="formulario-masivo"
+      [formGroup]="formularioMasivo"
+      (ngSubmit)="enviar_archivo()"
+    >
+      <div class="formato-tabla">
+        <p>Formato archivo notas de venta</p>
+        <app-formato-archivo
+          [columnasArchivo]="columnasArchivoNotaVentas"
+        ></app-formato-archivo>
+      </div>
+      <div class="form-control">
+        <mat-accordion>
+          <mat-expansion-panel [(expanded)]="estadoPanelNotaVenta">
+            <mat-expansion-panel-header>
+              <mat-panel-title>Notas de venta</mat-panel-title>
+            </mat-expansion-panel-header>
+            <label class="cargar-archivo" for="nota-venta"
+              >Cargar archivo</label
+            >
+            <input
+              class="input-personalizado"
+              formControlName="archivoNotaVenta"
+              type="file"
+              (change)="
+                onFileChange($event,'nota_venta');
+                obtenerNombreArchivoNotaVentas();
+                estadoPanelNotaVenta = false
+              "
+              id="nota-venta"
+              name="nota-venta"
+              accept=".csv, .xlsx"
+            />
+          </mat-expansion-panel>
+        </mat-accordion>
+        <span class="nombre-archivo">{{ nombreArchivoNotaVentas }}</span>
+      </div>
+      <div class="formato-tabla">
+        <p>Formato archivo restricciones</p>
+        <app-formato-archivo
+          [columnasArchivo]="columnasArchivoRestricciones"
+        ></app-formato-archivo>
+      </div>
+      <div class="form-control">
+        <mat-accordion>
+          <mat-expansion-panel [(expanded)]="estadoPanelRestricciones">
+            <mat-expansion-panel-header>
+              <mat-panel-title>Restricciones</mat-panel-title>
+            </mat-expansion-panel-header>
+            <label class="cargar-archivo" for="restricciones"
+              >Cargar archivo</label
+            >
+            <input
+              class="input-personalizado"
+              formControlName="archivoRestricciones"
+              type="file"
+              (change)="
+                onFileChange($event,'restricciones');
+                obtenerNombreArchivoRestricciones();
+                estadoPanelRestricciones = false
+              "
+              id="restricciones"
+              name="restricciones"
+              accept=".csv, .xlsx"
+            />
+          </mat-expansion-panel>
+        </mat-accordion>
+        <span class="nombre-archivo">{{ nombreArchivoRestricciones }}</span>
+      </div>
+      <div class="formato-tabla-gl">
+        <p>Formato archivo grupos logísticos</p>
+        <app-formato-archivo
+          [columnasArchivo]="columnasArchivoGruposLogisticos"
+        ></app-formato-archivo>
+      </div>
+      <div class="form-control">
+        <mat-accordion>
+          <mat-expansion-panel [(expanded)]="estadoPanelGruposLogisticos">
+            <mat-expansion-panel-header>
+              <mat-panel-title>Grupos logísticos</mat-panel-title>
+            </mat-expansion-panel-header>
+            <label class="cargar-archivo" for="grupos-logisticos"
+              >Cargar archivo</label
+            >
+            <input
+              class="input-personalizado"
+              formControlName="archivoGruposLogisticos"
+              type="file"
+              (change)="
+                onFileChange($event,'grupos');
+                obtenerNombreArchivoGruposLogisticos();
+                estadoPanelGruposLogisticos = false
+              "
+              id="grupos-logisticos"
+              name="grupos-logisticos"
+              accept=".csv, .xlsx"
+            />
+          </mat-expansion-panel>
+        </mat-accordion>
+        <span class="nombre-archivo">{{ nombreArchivoGruposLogisticos }}</span>
+      </div>
+      <button
+        mat-raised-button
+        class="btn"
+        style="margin-bottom: 20px"
+        type="submit"
+        [disabled]="formularioMasivo.invalid"
+      >
+        Guardar
+      </button>
+    </form>
+  </div>
+  <app-spinner *ngIf="loading" [mensaje]= "mensaje"></app-spinner>
+</div>

@@ -1,0 +1,8 @@
+.tabla-resultado {
+  width: 100%;
+}
+
+.tabla-resultado th,
+.tabla-resultado td {
+  text-align: center;
+}

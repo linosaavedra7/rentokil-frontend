@@ -1,0 +1,244 @@
+<app-navegacion [listaNavegacion]="listaNavegacion"></app-navegacion>
+<div class="cliente" *ngIf="clienteSeleccionado.nombre !== ''">
+  <h2>Cliente: {{ clienteSeleccionado.nombre }}</h2>
+  <hr />
+</div>
+<div class="container">
+  <div class="left-container" *ngIf="listaClientes.length > 0">
+    <div
+      class="clientes-container"
+      [ngClass]="{ 'pointer-event': mostrarTablaSaturaciones === true }"
+      *ngIf="mostrarSeccionClientes"
+    >
+      <h2 style="margin: 0; text-align: center">Clientes nuevos</h2>
+      <hr width="100%" />
+      <div class="tabla-container">
+        <table
+          *ngIf="mostrarTablaClientes"
+          mat-table
+          [dataSource]="listaClientes"
+          class="mat-elevation-z5 tabla-clientes"
+          [ngClass]="{ 'pointer-event': loading === true }"
+        >
+          <ng-container matColumnDef="select">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let row" style="padding-left: 10px">
+              <mat-checkbox
+                (click)="$event.stopPropagation()"
+                (change)="
+                  $event ? seleccionCliente.toggle(row) : null;
+                  obtenerClienteSeleccionado()
+                "
+                [checked]="seleccionCliente.isSelected(row)"
+              >
+              </mat-checkbox>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="rut">
+            <th mat-header-cell class="centrar-texto" *matHeaderCellDef>Rut</th>
+            <td mat-cell class="centrar-texto" *matCellDef="let cliente">
+              {{ cliente.rut }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="nombre">
+            <th mat-header-cell class="centrar-texto" *matHeaderCellDef>
+              Nombre
+            </th>
+            <td mat-cell class="centrar-texto" *matCellDef="let cliente">
+              {{ cliente.nombre }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="nota_venta">
+            <th mat-header-cell class="centrar-texto" *matHeaderCellDef>
+              Nota de venta
+            </th>
+            <td mat-cell class="centrar-texto" *matCellDef="let cliente">
+              {{ cliente.nota_venta }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="visitas">
+            <th mat-header-cell class="centrar-texto" *matHeaderCellDef>
+              Visitas
+            </th>
+            <td mat-cell class="centrar-texto" *matCellDef="let cliente">
+              {{ cliente.visitas }}
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="columnasTablaClientes"></tr>
+          <tr
+            mat-row
+            *matRowDef="let row; columns: columnasTablaClientes"
+            (click)="seleccionCliente.toggle(row); obtenerClienteSeleccionado()"
+          ></tr>
+        </table>
+      </div>
+    </div>
+    <div class="confirmacion-resultado" *ngIf="mostrarConfirmacionPropuesta">
+      <h2 style="text-align: center">¿Acepta la propuesta de asignación?</h2>
+      <div class="botones-confirmacion">
+        <button
+          mat-raised-button
+          class="btn-cancelar"
+          type="button"
+          (click)="descartarPropuesta()"
+        >
+          Cancelar
+        </button>
+        <button
+          mat-raised-button
+          class="btn-aceptar"
+          type="button"
+          (click)="guardarPropuesta()"
+        >
+          Aceptar propuesta
+        </button>
+      </div>
+    </div>
+    <div
+      class="informacion-propuesta"
+      *ngIf="mostrarInformacionPropuestaAceptada"
+    >
+      <app-informacion-asignacion
+        *ngIf="!esAsignacionManual"
+        [informacionAsignacion]="informacionPropuestaAceptada"
+      ></app-informacion-asignacion>
+      <app-informacion-asignacion
+        *ngIf="esAsignacionManual"
+        [informacionAsignacion]="informacionPropuestaAceptada"
+        [esAsignacionManual]="esAsignacionManual"
+        [rutas]="listado_direcciones"
+        [linkMapa]="linkMapa"
+      ></app-informacion-asignacion>
+    </div>
+  </div>
+
+  <div
+    class="linea-separadora"
+    style="border-bottom: 1px solid #aaaaaa"
+    *ngIf="listaClientes.length > 0"
+  ></div>
+
+  <div class="right-container" *ngIf="listaClientes.length > 0">
+    <div
+      class="formulario-container"
+      [ngClass]="{ 'pointer-event': mostrarTablaSaturaciones === true }"
+      *ngIf="mostrarFormulario"
+    >
+      <h2 style="margin-bottom: 0">Se necesita la siguiente información:</h2>
+      <hr width="100%" />
+      <form
+        class="formulario-asignacion-manual"
+        [formGroup]="formularioAsignacionManual"
+        (ngSubmit)="generarPropuesta()"
+      >
+        <mat-form-field appearance="fill">
+          <mat-label>Grupo logístico</mat-label>
+          <mat-select
+            formControlName="grupoLogistico"
+            (selectionChange)="obtenerDias($event)"
+          >
+            <mat-option *ngFor="let grupo of gruposLogisticos" [value]="grupo">
+              {{ grupo }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="fill" *ngIf="listaDias.length !== 0">
+          <mat-label>Primer día logístico</mat-label>
+          <mat-select formControlName="primerDiaLogistico">
+            <mat-option *ngFor="let dias of listaDias" [value]="dias">{{
+              dias
+            }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field
+          appearance="fill"
+          *ngIf="clienteSeleccionado.visitas == 8 && listaDias.length !== 0"
+        >
+          <mat-label>Segundo día logístico</mat-label>
+          <mat-select formControlName="segundoDiaLogistico">
+            <mat-option
+              *ngFor="
+                let letra of letrasDiasLogisticos | keyvalue : retornarCero
+              "
+              [value]="letra.key"
+            >
+              {{ letra.value }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div class="botones-formulario">
+          <button
+            mat-raised-button
+            *ngIf="mostrarFormulario"
+            class="btn-saturaciones"
+            type="button"
+            (click)="mostrarTablaSaturaciones = true"
+          >
+            Ver saturaciones
+          </button>
+          <button
+            mat-raised-button
+            class="btn-generar"
+            type="submit"
+            [disabled]="formularioAsignacionManual.invalid"
+          >
+            Generar propuesta
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- SECCIÓN RESULTADO OPTIMIZACIÓN -->
+    <div class="resultado-optimizacion" *ngIf="mostrarResultadoPropuesta">
+      <div
+        style="
+          display: flex;
+          justify-content: space-evenly;
+          flex-wrap: wrap;
+          padding-top: 3%;
+        "
+      >
+        <ng-container
+          *ngFor="let dia_log of dias_logisticos_cliente; let i = index"
+        >
+          <button
+            mat-button
+            class="btn-diaLog"
+            style="display: inline-block; margin-bottom: 20px"
+            (click)="resultado_asignacion(dia_log)"
+            [attr.id]="dia_log"
+          >
+            {{ dia_log }}
+          </button>
+        </ng-container>
+      </div>
+
+      <div *ngIf="resultado[0].rutero != ''">
+        <app-resultado-optimizacion
+          [datosOptimizacion]="resultado"
+        ></app-resultado-optimizacion>
+      </div>
+    </div>
+
+    <div id="mapa"></div>
+  </div>
+  <div class="seccion-saturaciones" *ngIf="mostrarTablaSaturaciones">
+    <div class="tabla-saturaciones">
+      <app-tabla-saturaciones></app-tabla-saturaciones>
+      <button
+        mat-raised-button
+        class="btn-cerrar"
+        type="button"
+        (click)="mostrarTablaSaturaciones = false"
+      >
+        Cerrar
+      </button>
+    </div>
+  </div>
+
+  <div class="no-hay-clientes" *ngIf="listaClientes.length == 0">
+    <p style="color: #cccccc">No hay clientes nuevos por asignar</p>
+  </div>
+
+  <app-spinner *ngIf="loading" [mensaje]="mensajeSpinner"></app-spinner>
+</div>

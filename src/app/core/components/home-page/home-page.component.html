@@ -1,0 +1,144 @@
+<mat-toolbar>
+  <button mat-icon-button id="btn-menu" (click)="isExpanded = !isExpanded">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span class="info-empresa">Rentokil Initial Chile</span>
+  <span class="spacer"></span>
+  <span class="info-usuario" style="padding-right: 20px"
+    >Usuario: {{ name }}</span
+  >
+  <mat-label *ngIf="this.zonas.length != 0">zonas </mat-label>
+  <div *ngIf="this.zonas.length != 0">
+    <mat-select>
+      <mat-option *ngFor="let zona of zonas | keyvalue : retornarCero">{{
+        zona.value
+      }}</mat-option>
+    </mat-select>
+  </div>
+
+  <button mat-icon-button (click)="admin()" *ngIf = "rol == 'admin'">
+    <mat-icon>supervisor_account</mat-icon>
+  </button>
+
+  <button mat-icon-button (click)="logout()">
+    <mat-icon>logout</mat-icon>
+  </button>
+</mat-toolbar>
+
+<mat-sidenav-container autosize>
+  <mat-sidenav #sidenav mode="side" disableClose="true" opened="true">
+    <mat-nav-list>
+      <img
+        *ngIf="isExpanded"
+        class="logo-plataforma"
+        src="/assets/img/logo-sistema.png"
+        alt="Logo Plataforma de Asignación Logística"
+      />
+      <a
+        mat-list-item
+        (click)="moduloSeleccionado('inicio')"
+        [ngClass]="{ 'modulo-activo': moduloInicio === true }"
+        [routerLink]="['/informacion']"
+      >
+        <mat-icon mat-list-icon (click)="isExpanded = true">home</mat-icon>
+        <span mat-line *ngIf="isExpanded">Inicio</span>
+      </a>
+      <a
+        mat-list-item
+        (click)="moduloSeleccionado('ingreso')"
+        [ngClass]="{ 'modulo-activo': moduloIngreso === true }"
+      >
+        <mat-icon mat-list-icon (click)="isExpanded = true">edit_note</mat-icon>
+        <span mat-line *ngIf="isExpanded">Ingreso de datos</span>
+      </a>
+      <a
+        mat-list-item
+        class="item-modulo-activo"
+        *ngIf="moduloIngreso && isExpanded"
+        [routerLink]="['/ingreso-de-datos/clientes-antiguos']"
+        [routerLinkActive]="['item-seleccionado']"
+        >Cliente antiguo</a
+      >
+      <a
+        mat-list-item
+        class="item-modulo-activo"
+        *ngIf="moduloIngreso && isExpanded"
+        [routerLink]="['/ingreso-de-datos/clientes-nuevos']"
+        [routerLinkActive]="['item-seleccionado']"
+        >Cliente nuevo</a
+      >
+
+      <a
+        mat-list-item
+        (click)="moduloSeleccionado('asignacion')"
+        [ngClass]="{ 'modulo-activo': moduloAsignacion }"
+      >
+        <mat-icon mat-list-icon (click)="isExpanded = true"
+          >person_add</mat-icon
+        >
+        <span mat-line *ngIf="isExpanded">Asignación de clientes</span>
+      </a>
+      <a
+        mat-list-item
+        *ngIf="moduloAsignacion && isExpanded"
+        [routerLink]="['/asignacion-de-clientes/asignacion-por-modelo']"
+        [routerLinkActive]="['item-seleccionado']"
+        >Asignación por modelo</a
+      >
+      <a
+        mat-list-item
+        class="item-modulo-activo"
+        *ngIf="moduloAsignacion && isExpanded"
+        [routerLink]="['/asignacion-de-clientes/asignacion-manual']"
+        [routerLinkActive]="['item-seleccionado']"
+        >Asignación manual</a
+      >
+
+      <a
+        mat-list-item
+        (click)="moduloSeleccionado('gestion')"
+        [ngClass]="{ 'modulo-activo': moduloGestion === true }"
+      >
+        <mat-icon mat-list-icon (click)="isExpanded = true">route</mat-icon>
+        <span mat-line *ngIf="isExpanded">Gestión de rutas</span>
+      </a>
+      <a
+        mat-list-item
+        class="item-modulo-activo"
+        *ngIf="moduloGestion && isExpanded"
+        [routerLink]="['/gestion-de-rutas/revisar-ruta']"
+        [routerLinkActive]="['item-seleccionado']"
+        >Revisar ruta</a
+      >
+      <a
+        mat-list-item
+        class="item-modulo-activo"
+        *ngIf="moduloGestion && isExpanded && rol == 'admin'"
+        [routerLink]="['/gestion-de-rutas/editar-ruta']"
+        [routerLinkActive]="['item-seleccionado']"
+        >Editar ruta</a
+      >
+      <a
+        mat-list-item
+        class="item-modulo-activo"
+        *ngIf="moduloGestion && isExpanded && rol == 'admin'"
+        [routerLink]="['/gestion-de-rutas/grupo-logistico']"
+        [routerLinkActive]="['item-seleccionado']"
+        >Grupo logístico</a
+      >
+      <a
+        mat-list-item
+        class="item-modulo-activo"
+        *ngIf="moduloGestion && isExpanded && rol == 'admin'"
+        [routerLink]="['/gestion-de-rutas/dar-de-baja']"
+        [routerLinkActive]="['item-seleccionado']"
+        >Dar de baja</a
+      >
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <div class="modulos-container">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
